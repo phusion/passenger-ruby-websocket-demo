@@ -1,5 +1,3 @@
-# https://github.com/imanel/websocket-ruby
-# Install with: gem install websocket
 require 'websocket'
 
 def server_handshake(env)
@@ -31,6 +29,29 @@ def rack_env_key_to_http_header_name(key)
   name
 end
 
+def process_input(io, server, input_parser)
+  # Slurp as much input as possible.
+  begin
+    while select([io], nil, nil, 0)
+      input_parser << io.readpartial(1024)
+    end
+  rescue EOFError
+  end
+
+  # Parse all input into WebSocket frames and process them.
+  while (frame = input_parser.next)
+    send_output(io, server, "Echo: #{frame}\n")
+  end
+end
+
+def send_output(io, server, data)
+  frame = WebSocket::Frame::Outgoing::Server.new(
+    :version => server.version,
+    :data => data,
+    :type => :text)
+  io.write(frame.to_s)
+end
+
 app = proc do |env|
   # Hijack the socket, then operate on the socket directly to send
   # websocket messages.
@@ -41,14 +62,11 @@ app = proc do |env|
     server = server_handshake(env)
     io.write(server.to_s)
 
-    # Stream body data.
+    # Handle input and stream responses.
+    input_parser = WebSocket::Frame::Incoming::Server.new(:version => server.version)
     10.times do |i|
-      data = "Hello world #{i}"
-      frame = WebSocket::Frame::Outgoing::Server.new(
-        :version => server.version,
-        :data => data,
-        :type => :text)
-      io.write(frame.to_s)
+      process_input(io, server, input_parser)
+      send_output(io, server, "Hello world #{i}\n")
       sleep 1
     end
   ensure
