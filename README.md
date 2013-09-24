@@ -2,40 +2,52 @@
 
 This repository demonstrates a small WebSocket-capable Rack application on Phusion Passenger 4. The application performs a WebSocket handshake and sends 10 "hello world" messages to the client with a 1 second delay between each message. Anything that the client sends is echoed back to the client, after an at most 1 second delay.
 
-## Setup
+## Getting started
 
-You need:
+Install the gem bundle and start Phusion Passenger Standalone.
 
- * Phusion Passenger >= 4.0.19.
- * Nginx >= 1.4.1 (except when using Phusion Passenger Standalone, which already takes care of Nginx).
- * The [websocket gem](https://github.com/imanel/websocket-ruby): `gem install websocket`. This is used for parsing the WebSocket protocol.
- * [wssh](https://github.com/progrium/wssh), the command line WebSocket client (requires libevent).
-   * Unfortunately WSSH has been broken because of a new ws4py release. You need to manually unbreak it by following [these instructions](https://github.com/progrium/wssh/issues/17#issuecomment-15828660).
-   * If you installed libevent with MacPorts then gevent may have trouble finding event.h. Use this command tell gevent where it can find libevent: `sudo env C_INCLUDE_PATH=/opt/local/include LIBRARY_PATH=/opt/local/lib python setup.py install`
+    bundle install
+    bundle exec passenger start
 
-Run on Phusion Passenger for Nginx:
+You also need to install [wssh](https://github.com/progrium/wssh), the WebSocket command line client:
 
-    # Make sure this is the FIRST server entry in your Nginx config file
-    # because we're going to access it through the host name '127.0.0.1'.
-    # Unfortunately wssh does not support host names that are aliased to
-    # 127.0.0.1 through /etc/hosts.
-    server {
-        listen 80;
-        server_name websocket.test;
-        root /path/to/minimal-passenger-websocket-example/public;
-        passenger_enabled on;
-    }
+    git clone https://github.com/progrium/wssh.git ~/wssh
+    cd ~/wssh
+    sudo python setup.py install
 
-Run on Phusion Passenger Standalone:
+Note that wssh requires libevent (because wssh uses gevent). If you installed libevent with MacPorts then gevent may have trouble finding event.h. Use this command tell gevent where it can find libevent: `sudo env C_INCLUDE_PATH=/opt/local/include LIBRARY_PATH=/opt/local/lib python setup.py install`
 
-    passenger start
+## Compatibility
+
+ * This app uses plain Rack, and thus is framework agnostic.
+ * WebSockets works on Phusion Passenger for Apache, Phusion Passenger for Nginx and Phusion Passenger Standalone.
+ * At least version 4.0.5 of Phusion Passenger is required.
+ * Only the RFC 6455 version of the WebSocket protocol is supported.
+
+## Testing
 
 Perform a request and see it in action:
 
-    wssh
+    wssh localhost:3000/
 
 (`wssh` may be in /opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin if you're using Python 2.7 from MacPorts)
 
-## Protocol support
+While wssh is active, whenever you type anything into the console and press Enter, the server will echo it back to you.
 
-Only RFC 6455 is supported.
+## Multithreading and performance
+
+WebSockets works great on both the open source variant of Phusion Passenger, as well as on [Phusion Passenger Enterprise](https://www.phusionpassenger.com/). For optimal performance, Phusion Passenger Enterprise with multithreading is recommended. You should use the following settings for enabling multithreading. The more concurrent users you have, the higher your thread count should be. As a rule, your thread count should be at least the number of WebSocket sessions you have.
+
+Apache:
+
+    PassengerConcurrencyModel thread
+    PassengerThreadCount 64
+
+Nginx:
+
+    passenger_concurrency_model thread
+    passenger_thread_count 64
+
+## Feedback
+
+Please join [the discussion forum](http://groups.google.com/group/phusion-passenger) if you have questions or feedback about this demo.

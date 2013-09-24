@@ -53,8 +53,9 @@ def send_output(io, server, data)
 end
 
 app = proc do |env|
-  # Hijack the socket, then operate on the socket directly to send
-  # websocket messages.
+  # On every request, hijack the socket using the Rack socket hijacking API
+  # (http://blog.phusion.nl/2013/01/23/the-new-rack-socket-hijacking-api/),
+  # then operate on the socket directly to send WebSocket messages.
   env['rack.hijack'].call
   io = env['rack.hijack_io']
   begin
