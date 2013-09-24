@@ -4,8 +4,10 @@ This repository demonstrates a small WebSocket-capable Rack application on Phusi
 
 ## Getting started
 
-Install the gem bundle and start Phusion Passenger Standalone.
+Clone this repository, install the gem bundle and start Phusion Passenger Standalone.
 
+    git clone https://github.com/phusion/passenger-ruby-websocket-demo.git
+    cd passenger-ruby-websocket-demo
     bundle install
     bundle exec passenger start
 
