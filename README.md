@@ -26,7 +26,7 @@ Note that wssh requires libevent (because wssh uses gevent). If you installed li
 
 ## Testing
 
-Perform a request and see it in action:
+Once the server is started, perform a request and see it in action:
 
     wssh localhost:3000/
 
