@@ -6,11 +6,11 @@ This repository demonstrates a small WebSocket-capable Rack application on Phusi
 
 You need:
 
- * Phusion Passenger >= 4.0.0 RC5.
- * Nginx >= 1.3.15 (except when using Phusion Passenger Standalone).
+ * Phusion Passenger >= 4.0.19.
+ * Nginx >= 1.4.1 (except when using Phusion Passenger Standalone, which already takes care of Nginx).
  * The [websocket gem](https://github.com/imanel/websocket-ruby): `gem install websocket`. This is used for parsing the WebSocket protocol.
  * [wssh](https://github.com/progrium/wssh), the command line WebSocket client (requires libevent).
-   * Unfortunately WSSH has been broken because of a new ws4py release. You need to manually unbreak it by following [these instructions]().
+   * Unfortunately WSSH has been broken because of a new ws4py release. You need to manually unbreak it by following [these instructions](https://github.com/progrium/wssh/issues/17#issuecomment-15828660).
    * If you installed libevent with MacPorts then gevent may have trouble finding event.h. Use this command tell gevent where it can find libevent: `sudo env C_INCLUDE_PATH=/opt/local/include LIBRARY_PATH=/opt/local/lib python setup.py install`
 
 Run on Phusion Passenger for Nginx:
@@ -28,11 +28,11 @@ Run on Phusion Passenger for Nginx:
 
 Run on Phusion Passenger Standalone:
 
-    passenger start --nginx-version=1.3.15
+    passenger start
 
 Perform a request and see it in action:
 
-    wssh 
+    wssh
 
 (`wssh` may be in /opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin if you're using Python 2.7 from MacPorts)
 
