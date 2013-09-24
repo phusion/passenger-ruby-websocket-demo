@@ -14,6 +14,8 @@ More information about Phusion Passenger:
 
 ## Getting started
 
+### Setup
+
 Clone this repository, install the gem bundle and start Phusion Passenger Standalone.
 
     git clone https://github.com/phusion/passenger-ruby-websocket-demo.git
@@ -29,14 +31,7 @@ You also need to install [wssh](https://github.com/progrium/wssh), the WebSocket
 
 Note that wssh requires libevent (because wssh uses gevent). If you installed libevent with MacPorts then gevent may have trouble finding event.h. Use this command tell gevent where it can find libevent: `sudo env C_INCLUDE_PATH=/opt/local/include LIBRARY_PATH=/opt/local/lib python setup.py install`
 
-## Compatibility
-
- * This app uses plain Rack, and thus is framework agnostic.
- * WebSockets works on Phusion Passenger for Apache, Phusion Passenger for Nginx and Phusion Passenger Standalone.
- * At least version 4.0.5 of Phusion Passenger is required.
- * Only the RFC 6455 version of the WebSocket protocol is supported.
-
-## Testing
+### Seeing it in action
 
 Once the server is started, perform a request and see it in action:
 
@@ -45,6 +40,13 @@ Once the server is started, perform a request and see it in action:
 (`wssh` may be in /opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin if you're using Python 2.7 from MacPorts)
 
 While wssh is active, whenever you type anything into the console and press Enter, the server will echo it back to you.
+
+## Compatibility
+
+ * This app uses plain Rack, and thus is framework agnostic.
+ * WebSockets works on Phusion Passenger for Apache, Phusion Passenger for Nginx and Phusion Passenger Standalone.
+ * At least version 4.0.5 of Phusion Passenger is required.
+ * Only the RFC 6455 version of the WebSocket protocol is supported.
 
 ## Multithreading and performance
 
