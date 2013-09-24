@@ -1,6 +1,6 @@
-# Minimal WebSocket example with Phusion Passenger
+# WebSockets on Phusion Passenger
 
-This repository demonstrates a small WebSocket-capable Rack application on Phusion Passenger 4. The application performs a WebSocket handshake and sends 10 "hello world" messages to the client with a 1 second delay between each message. Anything that the client sends is echoed back to the client, after an at most 1 second delay.
+This repository demonstrates a small WebSocket-capable Rack application on [Phusion Passenger](https://www.phusionpassenger.com/). The application performs a WebSocket handshake and sends 10 "hello world" messages to the client with a 1 second delay between each message. Anything that the client sends is echoed back to the client, after an at most 1 second delay.
 
 ## Getting started
 
