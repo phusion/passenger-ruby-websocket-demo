@@ -2,6 +2,16 @@
 
 This repository demonstrates a small WebSocket-capable Rack application on [Phusion Passenger](https://www.phusionpassenger.com/). The application performs a WebSocket handshake and sends 10 "hello world" messages to the client with a 1 second delay between each message. Anything that the client sends is echoed back to the client, after an at most 1 second delay.
 
+If you like this demo, please [tweet about it](https://twitter.com/share) or [follow us on Twitter](https://twitter.com/phusion_nl).
+
+More information about Phusion Passenger:
+
+ * [Website](https://www.phusionpassenger.com/)
+ * [Documentation and support](https://www.phusionpassenger.com/)
+ * [Source code](https://github.com/phusion/passenger)
+ * [Community discussion forum](https://groups.google.com/d/forum/phusion-passenger‎)
+ * [Issue tracker](https://code.google.com/p/phusion-passenger/issues/list)
+
 ## Getting started
 
 Clone this repository, install the gem bundle and start Phusion Passenger Standalone.
@@ -50,6 +60,11 @@ Nginx:
     passenger_concurrency_model thread
     passenger_thread_count 64
 
-## Feedback
+## Next steps
 
-Please join [the discussion forum](http://groups.google.com/group/phusion-passenger) if you have questions or feedback about this demo.
+ * Using WebSockets on Phusion Passenger? [Tweet about us](https://twitter.com/share), [follow us on Twitter](https://twitter.com/phusion_nl) or [fork us on Github](https://github.com/phusion/passenger).
+ * Having problems? Please post a message at [the community discussion forum](https://groups.google.com/d/forum/phusion-passenger).
+
+[<img src="http://www.phusion.nl/assets/logo.png">](http://www.phusion.nl/)
+
+Please enjoy Phusion Passenger, a product by [Phusion](http://www.phusion.nl/). :-)
