@@ -10,7 +10,7 @@ More information about Phusion Passenger:
  * [Documentation and support](https://www.phusionpassenger.com/)
  * [Source code](https://github.com/phusion/passenger)
  * [Community discussion forum](https://groups.google.com/d/forum/phusion-passenger‎)
- * [Issue tracker](https://code.google.com/p/phusion-passenger/issues/list)
+ * [Issue tracker](https://github.com/phusion/passenger/issues)
 
 ## Getting started
 
@@ -50,7 +50,7 @@ While wssh is active, whenever you type anything into the console and press Ente
 
 ## Multithreading and performance
 
-WebSockets works great on both the open source variant of Phusion Passenger, as well as on [Phusion Passenger Enterprise](https://www.phusionpassenger.com/). For optimal performance, Phusion Passenger Enterprise with multithreading is recommended. You should use the following settings for enabling multithreading. The more concurrent users you have, the higher your thread count should be. As a rule, your thread count should be at least the number of WebSocket sessions you have.
+WebSockets work great on both the open source variant of Phusion Passenger, as well as on [Phusion Passenger Enterprise](https://www.phusionpassenger.com/). For optimal performance, Phusion Passenger Enterprise with multithreading is recommended. You should use the following settings for enabling multithreading. The more concurrent users you have, the higher your thread count should be. As a rule, your thread count should be at least the number of WebSocket sessions you have.
 
 Apache:
 
