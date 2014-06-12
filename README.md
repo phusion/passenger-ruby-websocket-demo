@@ -21,7 +21,7 @@ Clone this repository, install the gem bundle and start Phusion Passenger Standa
     git clone https://github.com/phusion/passenger-ruby-websocket-demo.git
     cd passenger-ruby-websocket-demo
     bundle install
-    bundle exec passenger start
+    bundle exec passenger start --sticky-sessions
 
 You also need to install [wssh](https://github.com/progrium/wssh), the WebSocket command line client:
 
@@ -30,6 +30,8 @@ You also need to install [wssh](https://github.com/progrium/wssh), the WebSocket
     sudo python setup.py install
 
 Note that wssh requires libevent (because wssh uses gevent). If you installed libevent with MacPorts then gevent may have trouble finding event.h. Use this command tell gevent where it can find libevent: `sudo env C_INCLUDE_PATH=/opt/local/include LIBRARY_PATH=/opt/local/lib python setup.py install`
+
+If you deploy this demo on Nginx or Apache, be sure to enable [sticky sessions](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerStickySessions) in Phusion Passenger.
 
 ### Seeing it in action
 
