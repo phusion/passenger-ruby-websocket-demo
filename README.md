@@ -1,53 +1,35 @@
 # WebSockets on Phusion Passenger
 
-This repository demonstrates a small WebSocket-capable Rack application on [Phusion Passenger](https://www.phusionpassenger.com/). The application performs a WebSocket handshake and sends 10 "hello world" messages to the client with a 1 second delay between each message. Anything that the client sends is echoed back to the client, after an at most 1 second delay.
+This application demonstrates WebSocket support in [Phusion Passenger](https://www.phusionpassenger.com/). Passenger supports all major modern web technologies, such as WebSockets, entirely out of the box. You don't have to do anything: WebSocket support just works.
 
 If you like this demo, please [tweet about it](https://twitter.com/share) or [follow us on Twitter](https://twitter.com/phusion_nl).
 
-More information about Phusion Passenger:
+More information about Passenger:
 
  * [Website](https://www.phusionpassenger.com/)
  * [Documentation and support](https://www.phusionpassenger.com/)
  * [Source code](https://github.com/phusion/passenger)
- * [Community discussion forum](https://groups.google.com/d/forum/phusion-passenger‎)
+ * [Community discussion forum](https://groups.google.com/d/forum/phusion-passenger)
  * [Issue tracker](https://github.com/phusion/passenger/issues)
 
 ## Getting started
 
-### Setup
-
-Clone this repository, install the gem bundle and start Phusion Passenger Standalone.
+Clone this repository, install the gem bundle and start Passenger Standalone.
 
     git clone https://github.com/phusion/passenger-ruby-websocket-demo.git
     cd passenger-ruby-websocket-demo
     bundle install
-    bundle exec passenger start --sticky-sessions
+    bundle exec passenger start
 
-You also need to install [wssh](https://github.com/progrium/wssh), the WebSocket command line client:
+Access the demo application at http://0.0.0.0:3000/ and see it in action.
 
-    git clone https://github.com/progrium/wssh.git ~/wssh
-    cd ~/wssh
-    sudo python setup.py install
-
-Note that wssh requires libevent (because wssh uses gevent). If you installed libevent with MacPorts then gevent may have trouble finding event.h. Use this command tell gevent where it can find libevent: `sudo env C_INCLUDE_PATH=/opt/local/include LIBRARY_PATH=/opt/local/lib python setup.py install`
-
-If you deploy this demo on Nginx or Apache, be sure to enable [sticky sessions](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerStickySessions) in Phusion Passenger.
-
-### Seeing it in action
-
-Once the server is started, perform a request and see it in action:
-
-    wssh localhost:3000/
-
-(`wssh` may be in /opt/local/Library/Frameworks/Python.framework/Versions/2.7/bin if you're using Python 2.7 from MacPorts)
-
-While wssh is active, whenever you type anything into the console and press Enter, the server will echo it back to you.
+If you deploy this demo on Nginx or Apache, be sure to enable [sticky sessions](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerStickySessions) in Passenger.
 
 ## Compatibility
 
  * This app uses plain Rack, and thus is framework agnostic.
- * WebSockets works on Phusion Passenger for Apache, Phusion Passenger for Nginx and Phusion Passenger Standalone.
- * At least version 4.0.5 of Phusion Passenger is required.
+ * WebSockets works on Passenger for Apache, Passenger for Nginx and Passenger Standalone.
+ * At least version 4.0.5 of Passenger is required.
  * Only the RFC 6455 version of the WebSocket protocol is supported.
 
 ## Multithreading and performance

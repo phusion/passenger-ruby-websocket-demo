@@ -52,7 +52,7 @@ def send_output(io, server, data)
   io.write(frame.to_s)
 end
 
-app = proc do |env|
+def serve_websocket(env)
   # On every request, hijack the socket using the Rack socket hijacking API
   # (http://blog.phusion.nl/2013/01/23/the-new-rack-socket-hijacking-api/),
   # then operate on the socket directly to send WebSocket messages.
@@ -65,13 +65,29 @@ app = proc do |env|
 
     # Handle input and stream responses.
     input_parser = WebSocket::Frame::Incoming::Server.new(:version => server.version)
-    10.times do |i|
+    while true
       process_input(io, server, input_parser)
-      send_output(io, server, "Hello world #{i}\n")
+      send_output(io, server, "#{Time.now}\n")
       sleep 1
     end
   ensure
     io.close
+  end
+end
+
+def serve_static_file(env)
+  if env["PATH_INFO"] == "/"
+    env["PATH_INFO"] = "/index.html"
+  end
+  public_dir = File.expand_path(File.dirname(__FILE__)) + "/public"
+  Rack::File.new(public_dir).call(env)
+end
+
+app = proc do |env|
+  if env["PATH_INFO"] == "/websocket"
+    serve_websocket(env)
+  else
+    serve_static_file(env)
   end
 end
 

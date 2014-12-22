@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Phusion Passenger: Ruby WebSocket demo</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/phusion/passenger-nodejs-websocket-demo">View on GitHub</a>
+
+          <h1 id="project_title">Phusion Passenger</h1>
+          <h2 id="project_tagline">Ruby WebSocket demo</h2>
+
+          <section id="downloads">
+            <a class="zip_download_link" href="https://github.com/phusion/passenger-ruby-websocket-demo/archive/master.zip">Download this project as a .zip file</a>
+            <a class="tar_download_link" href="https://github.com/phusion/passenger-ruby-websocket-demo/archive/master.tar.gz">Download this project as a tar.gz file</a>
+          </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>Just a simple timestamp server</h1>
+        <p>In this demo, the server sends the current timestamp over a WebSocket once per second. The server generates raw WebSocket frames and sends them to the client using the Rack socket hijacking API. You can see the received timestamps below.</p>
+        <form action="javascript:return false" style="padding: 0 0 20px 0">
+          <p>You can also say something to the server, and it'll reply back after a 1 second delay:</p>
+          <div>
+            <input id="message" type="text" placeholder="Your message" style="width: 100%"></input>
+          </div>
+        </form>
+        <ul id="times" class="empty">
+          <li>Nothing received from the server yet...</li>
+        </ul>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">This demo is brought to you by <a href="http://www.phusion.nl">Phusion</a></p>
+        <p class="copyright">Slate theme maintained by <a href="https://github.com/jsncostello">Jason Costello</a></p>
+      </footer>
+    </div>
+
+    <script>
+      var websocketUri;
+      if (location.protocol == 'http:') {
+        websocketUri = 'ws:'
+      } else {
+        websocketUri = 'wss:';
+      }
+      websocketUri += '//' + location.host + '/websocket';
+
+      var socket = new WebSocket(websocketUri);
+      socket.onopen = function() {
+        logMessage("WebSocket opened");
+      }
+      socket.onclose = function() {
+        logMessage("WebSocket closed");
+      }
+      socket.onerror = function() {
+        logMessage("WebSocket error encountered");
+      }
+      socket.onmessage = function(event) {
+        logMessage(event.data);
+      }
+
+      function logMessage(message) {
+        var times = document.getElementById('times');
+        var children, i;
+
+        // Initialize empty list.
+        if (times.className == 'empty') {
+          times.className = '';
+          times.innerHTML = '';
+        }
+
+        // Add timestamp.
+        var li = document.createElement('li');
+        li.innerHTML = message;
+        times.appendChild(li);
+
+        // Ensure that the list contains no more than 5 items.
+        var children = times.children;
+        while (children.length > 5) {
+          times.removeChild(children[0]);
+        }
+      }
+
+      var messageBox = document.getElementById('message');
+      messageBox.addEventListener('change', onMessageChanged);
+      messageBox.addEventListener('keyup', onMessageChanged);
+
+      function onMessageChanged() {
+        socket.send(messageBox.value);
+      }
+    </script>
+
+  </body>
+</html>
