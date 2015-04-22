@@ -91,4 +91,9 @@ app = proc do |env|
   end
 end
 
+# See https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#tuning_sse_websockets
+if defined?(PhusionPassenger)
+  PhusionPassenger.advertised_concurrency_level = 0
+end
+
 run app
