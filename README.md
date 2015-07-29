@@ -7,7 +7,8 @@ If you like this demo, please [tweet about it](https://twitter.com/share) or [fo
 More information about Passenger:
 
  * [Website](https://www.phusionpassenger.com/)
- * [Documentation and support](https://www.phusionpassenger.com/)
+ * [Documentation](https://www.phusionpassenger.com/library/)
+ * [Support](https://www.phusionpassenger.com/support)
  * [Source code](https://github.com/phusion/passenger)
  * [Community discussion forum](https://groups.google.com/d/forum/phusion-passenger)
  * [Issue tracker](https://github.com/phusion/passenger/issues)
@@ -23,7 +24,7 @@ Clone this repository, install the gem bundle and start Passenger Standalone.
 
 Access the demo application at http://0.0.0.0:3000/ and see it in action.
 
-If you deploy this demo on Nginx or Apache, be sure to enable [sticky sessions](https://www.phusionpassenger.com/documentation/Users%20guide%20Nginx.html#PassengerStickySessions) in Passenger.
+If you deploy this demo on Nginx or Apache, be sure to enable [sticky sessions](https://www.phusionpassenger.com/library/config/nginx/reference/#passenger_sticky_sessions) in Passenger.
 
 ## Compatibility
 
@@ -34,7 +35,7 @@ If you deploy this demo on Nginx or Apache, be sure to enable [sticky sessions](
 
 ## Multithreading and performance
 
-WebSockets work great on both the open source variant of Phusion Passenger, as well as on [Phusion Passenger Enterprise](https://www.phusionpassenger.com/). For optimal performance, Phusion Passenger Enterprise with multithreading is recommended. You should use the following settings for enabling multithreading. The more concurrent users you have, the higher your thread count should be. As a rule, your thread count should be at least the number of WebSocket sessions you have.
+WebSockets work great on both the open source variant of Phusion Passenger, as well as on [Phusion Passenger Enterprise](https://www.phusionpassenger.com/enterprise). For optimal performance, Phusion Passenger Enterprise with multithreading is recommended. You should use the following settings for enabling multithreading. The more concurrent users you have, the higher your thread count should be. As a rule, your thread count should be at least the number of WebSocket sessions you have.
 
 Apache:
 
