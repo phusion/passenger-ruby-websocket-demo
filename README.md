@@ -24,12 +24,12 @@ Clone this repository, install the gem bundle and start Passenger Standalone.
 
 Access the demo application at http://0.0.0.0:3000/ and see it in action.
 
-If you deploy this demo on Nginx or Apache, be sure to enable [sticky sessions](https://www.phusionpassenger.com/library/config/nginx/reference/#passenger_sticky_sessions) in Passenger.
+If you deploy this demo to production, be sure to enable [sticky sessions](https://www.phusionpassenger.com/library/config/nginx/reference/#passenger_sticky_sessions) in Passenger.
 
 ## Compatibility
 
  * This app uses plain Rack, and thus is framework agnostic.
- * WebSockets works on Passenger for Apache, Passenger for Nginx and Passenger Standalone.
+ * WebSockets work on Passenger for Nginx and Passenger Standalone. [Apache is currently not supported](https://github.com/phusion/passenger/issues/1202).
  * At least version 4.0.5 of Passenger is required.
  * Only the RFC 6455 version of the WebSocket protocol is supported.
 
@@ -37,15 +37,17 @@ If you deploy this demo on Nginx or Apache, be sure to enable [sticky sessions](
 
 WebSockets work great on both the open source variant of Phusion Passenger, as well as on [Phusion Passenger Enterprise](https://www.phusionpassenger.com/enterprise). For optimal performance, Phusion Passenger Enterprise with multithreading is recommended. You should use the following settings for enabling multithreading. The more concurrent users you have, the higher your thread count should be. As a rule, your thread count should be at least the number of WebSocket sessions you have.
 
-Apache:
-
-    PassengerConcurrencyModel thread
-    PassengerThreadCount 64
-
 Nginx:
 
     passenger_concurrency_model thread
     passenger_thread_count 64
+
+Standalone:
+
+    {
+      "concurrency_model": "thread",
+      "thread_count": 64
+    }
 
 ## Next steps
 
