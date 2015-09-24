@@ -1,13 +1,11 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    daemon_controller (1.2.0)
-    passenger (4.0.45)
-      daemon_controller (>= 1.2.0)
+    passenger (5.0.18)
       rack
       rake (>= 0.8.1)
-    rack (1.5.2)
-    rake (10.3.2)
+    rack (1.6.4)
+    rake (10.4.2)
     websocket (1.1.1)
 
 PLATFORMS
