@@ -1,0 +1,4 @@
+{
+	"unlimited_concurrency_paths": ["/websocket"],
+	"sticky_sessions": true
+}

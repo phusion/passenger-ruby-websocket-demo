@@ -1,4 +1,5 @@
 require 'websocket'
+require 'thread'
 
 def server_handshake(env)
   data = "#{env['REQUEST_METHOD']} #{env['REQUEST_URI']} #{env['SERVER_PROTOCOL']}\r\n"
@@ -58,20 +59,24 @@ def serve_websocket(env)
   # then operate on the socket directly to send WebSocket messages.
   env['rack.hijack'].call
   io = env['rack.hijack_io']
-  begin
-    # Parse client handshake message and send server handshake response.
-    server = server_handshake(env)
-    io.write(server.to_s)
+  Thread.new do
+    begin
+      # Parse client handshake message and send server handshake response.
+      server = server_handshake(env)
+      io.write(server.to_s)
 
-    # Handle input and stream responses.
-    input_parser = WebSocket::Frame::Incoming::Server.new(:version => server.version)
-    while true
-      process_input(io, server, input_parser)
-      send_output(io, server, "#{Time.now}\n")
-      sleep 1
+      # Handle input and stream responses.
+      input_parser = WebSocket::Frame::Incoming::Server.new(:version => server.version)
+      while true
+        process_input(io, server, input_parser)
+        send_output(io, server, "#{Time.now}\n")
+        sleep 1
+      end
+    rescue Exception => e
+      STDERR.puts "*** ERROR: #{e} (#{e.class})\n#{e.backtrace.join("\n")}"
+    ensure
+      io.close
     end
-  ensure
-    io.close
   end
 end
 
@@ -89,11 +94,6 @@ app = proc do |env|
   else
     serve_static_file(env)
   end
-end
-
-# See https://www.phusionpassenger.com/library/config/tuning_sse_and_websockets/
-if defined?(PhusionPassenger)
-  PhusionPassenger.advertised_concurrency_level = 0
 end
 
 run app

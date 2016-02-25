@@ -30,24 +30,18 @@ If you deploy this demo to production, be sure to enable [sticky sessions](https
 
  * This app uses plain Rack, and thus is framework agnostic.
  * WebSockets work on Passenger for Nginx and Passenger Standalone. [Apache is currently not supported](https://github.com/phusion/passenger/issues/1202).
- * At least version 4.0.5 of Passenger is required.
+ * At least version 5.0.25 of Passenger is required.
  * Only the RFC 6455 version of the WebSocket protocol is supported.
 
-## Multithreading and performance
+## Tuning Passenger for WebSockets
 
-WebSockets work great on both the open source variant of Phusion Passenger, as well as on [Phusion Passenger Enterprise](https://www.phusionpassenger.com/enterprise). For optimal performance, Phusion Passenger Enterprise with multithreading is recommended. You should use the following settings for enabling multithreading. The more concurrent users you have, the higher your thread count should be. As a rule, your thread count should be at least the number of WebSocket sessions you have.
+WebSockets work great on both the open source variant of Phusion Passenger, as well as on [Phusion Passenger Enterprise](https://www.phusionpassenger.com/enterprise). But you need to tune a few settings. Please refer to the following places in the Passenger Library for more information:
 
-Nginx:
+ * [Tuning for Server Sent Events and WebSockets: Passenger + Nginx](https://www.phusionpassenger.com/library/config/nginx/tuning_sse_and_websockets/)
+ * [Tuning for Server Sent Events and WebSockets: Passenger + Apache](https://www.phusionpassenger.com/library/config/apache/tuning_sse_and_websockets/)
+ * [Tuning for Server Sent Events and WebSockets: Passenger Standalone](https://www.phusionpassenger.com/library/config/standalone/tuning_sse_and_websockets/)
 
-    passenger_concurrency_model thread
-    passenger_thread_count 64
-
-Standalone:
-
-    {
-      "concurrency_model": "thread",
-      "thread_count": 64
-    }
+This demo already contains tuning parameters for Passenger Standalone inside Passengerfile.json.
 
 ## Next steps
 

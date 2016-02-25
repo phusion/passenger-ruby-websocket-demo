@@ -1,7 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    passenger (5.0.22)
+    passenger (5.0.25)
       rack
       rake (>= 0.8.1)
     rack (1.6.4)
@@ -12,7 +12,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  passenger (>= 5.0.22)
+  passenger (>= 5.0.25)
   rack
   websocket
 
