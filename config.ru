@@ -18,7 +18,7 @@ def server_handshake(env)
   puts
   puts "WebSocket response:"
   puts server
-  return server
+  server
 end
 
 def rack_env_key_to_http_header_name(key)
@@ -31,18 +31,28 @@ def rack_env_key_to_http_header_name(key)
 end
 
 def process_input(io, server, input_parser)
+  done = false
+
   # Slurp as much input as possible.
   begin
     while select([io], nil, nil, 0)
       input_parser << io.readpartial(1024)
     end
   rescue EOFError
+    done = true
   end
 
   # Parse all input into WebSocket frames and process them.
   while (frame = input_parser.next)
-    send_output(io, server, "Echo: #{frame}\n")
+    case frame.type
+    when :data
+      send_output(io, server, "Echo: #{frame}\n")
+    when :close
+      done = true
+    end
   end
+
+  done
 end
 
 def send_output(io, server, data)
@@ -61,20 +71,24 @@ def serve_websocket(env)
   io = env['rack.hijack_io']
   Thread.new do
     begin
+      puts "WebSocket begun"
+
       # Parse client handshake message and send server handshake response.
       server = server_handshake(env)
       io.write(server.to_s)
 
       # Handle input and stream responses.
       input_parser = WebSocket::Frame::Incoming::Server.new(:version => server.version)
-      while true
-        process_input(io, server, input_parser)
+      done = false
+      while !done
+        done = process_input(io, server, input_parser)
         send_output(io, server, "#{Time.now}\n")
         sleep 1
       end
     rescue Exception => e
       STDERR.puts "*** ERROR: #{e} (#{e.class})\n#{e.backtrace.join("\n")}"
     ensure
+      puts "WebSocket finished"
       io.close
     end
   end
